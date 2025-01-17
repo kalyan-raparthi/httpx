@@ -11,15 +11,7 @@ fn handle_client(stream: TcpStream) {
     let mut reader = BufReader::new(stream);
     let mut request = String::new();
 
-    while let Ok(bytes_read) = reader.read_line(&mut request) {
-        if bytes_read == 0 || request == "\r\n" {
-            break;
-        }
-
-        print!("{}", request);
-        request.clear(); 
-    }
-
+    pri
     println!("End of request.\n");
 }
 
