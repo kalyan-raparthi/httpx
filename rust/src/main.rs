@@ -1,80 +1,67 @@
 use std::fs::File;
-use std::io::{BufReader, BufWriter, Read, Write};
+use std::io::{BufRead, BufReader, Write};
 use std::net::{TcpListener, TcpStream};
-use std::path::{Path, PathBuf};
 
-fn handle_client(mut stream: TcpStream) {
+fn respose(mut stream: TcpStream) {
     let mut reader = BufReader::new(&mut stream);
-    let mut buffer = [0; 1024];
-
-    if let Ok(size) = reader.read(&mut buffer) {
-        let request = std::str::from_utf8(&buffer[0..size]).unwrap_or("");
-        if let Some(line) = request.lines().next() {
-            if let Some(path) = line.split_whitespace().nth(1) {
-                if path == "/" {
-                    send_file(&mut stream, "index.html");
-                } else {
-                    send_file(&mut stream, path); 
-                }
+    let mut request_line = String::new();
+    let _ = reader.read_line(&mut request_line);
+    
+    match request_line.split_whitespace().next().unwrap() {
+        "GET" => {
+            if request_line.split_whitespace().nth(1).unwrap() == "/" {
+                send_html(&mut stream, "./index.html");
+            }
+            else {
+                stream.write("404".as_bytes()).expect("ERROR WHILE WRITING");
             }
         }
-    } else {
-        eprintln!("Failed to read from client");
+        _ => {
+            eprintln!("INVALID HTTP METHOD");
+        }
     }
 }
 
-fn send_file(mut stream: &mut TcpStream, path: &str) {
-    let mut writer = BufWriter::new(&mut stream);
-    let file_path = PathBuf::from(path); 
+fn send_html(stream: &mut impl Write, path: &str) {
+    let header = format!(
+        "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: {}\r\n\r\n",
+        get_file_size(path).unwrap()
+    );
 
-    if file_path.is_file() {
-        match File::open(&file_path) {
-            Ok(file) => {
-                let mut file_reader = BufReader::new(file);
-                let mut buffer = [0; 1024];
-                loop {
-                    match file_reader.read(&mut buffer) {
-                        Ok(0) => break, // End of file
-                        Ok(bytes_read) => {
-                            if let Err(e) = writer.write_all(&buffer[..bytes_read]) {
-                                eprintln!("Error writing to client: {}", e);
-                                break;
-                            }
-                        }
-                        Err(e) => {
-                            eprintln!("Error reading from file: {}", e);
-                            break;
-                        }
-                    }
-                }
-            }
-            Err(e) => {
-                eprintln!("Error opening file: {}", e);
-                let response = b"HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\n\r\n<h1>404 Not Found</h1>";
-                if let Err(e) = writer.write_all(response) {
-                    eprintln!("Error writing 404 response: {}", e);
-                }
-            }
-        }
-    } else {
-        let response = b"HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\n\r\n<h1>404 Not Found</h1>";
-        if let Err(e) = writer.write_all(response) {
-            eprintln!("Error writing 404 response: {}", e);
-        }
-    }
+    stream.write_all(header.as_bytes()).expect("ERROER WHILE WRITING TO CLIENT");
+    let mut file = File::open(path).expect("ERROR WHILE OPENING FILE");
+    std::io::copy(&mut file, stream).expect("ERROR WHILE WRITING TO CLIENT");
+}
+
+fn send_download(stream: &mut impl Write, path: &str) {
+    let header = format!(
+        "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Disposition: attachment;\r\nContentContent-Length: {}\r\n\r\n",
+        get_file_size(path).unwrap()
+    );
+
+    stream.write_all(header.as_bytes()).expect("ERROER WHILE WRITING TO CLIENT");
+    let mut file = File::open(path).expect("ERROR WHILE OPENING FILE");
+    std::io::copy(&mut file, stream).expect("ERROR WHILE WRITING TO CLIENT");
+}
+
+fn get_file_size(path: &str) -> std::io::Result<u64> {
+    let metadata = std::fs::metadata(path)?;
+    Ok(metadata.len())
 }
 
 fn main() {
-    let listener = TcpListener::bind("127.0.0.1:8080").expect("Failed to bind");
-    println!("Server listening on http://127.0.0.1:8080");
+    let server_socket = TcpListener::bind("127.0.0.1:2025").expect("Failed to bind");
+    println!("SERVER LISTENING ON: http://{}", &server_socket.local_addr().unwrap());
 
-    for stream in listener.incoming() {
-        match stream {
-            Ok(stream) => {
-                handle_client(stream);
-            }
+    loop {
+        match server_socket.accept() {
+            Ok((stream, cli_addr)) => {
+                println!("CONNECTED TO {}", cli_addr);
+                respose(stream);
+                println!("[CONNECTION CLOSED]");
+            },
             Err(e) => {
-                eprintln!("Error accepting connection: {}", e);
+                eprintln!("ERROR ACCEPTING CONNECTIONS => {e}");
             }
         }
     }
