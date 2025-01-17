@@ -20,7 +20,7 @@ fn response(mut stream: TcpStream) {
     let mut headers_str = String::new();
     loop {
         let mut line = String::new();
-        if reader.read_line(&mut line).is_err() || line == "\r\n" {
+        if reader.read_line(&mut line).is_err() || line.trim().is_empty() {
             break;
         }
         headers_str.push_str(&line);
