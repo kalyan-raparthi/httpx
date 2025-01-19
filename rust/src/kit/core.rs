@@ -132,17 +132,7 @@ pub fn response(stream: TcpStream) {
     
     let mut request = String::new();
     let _ = reader.read_line(&mut request);
-    
-
-    // let mut headers_str = String::new();
-    // loop {
-    //     let mut line = String::new();
-    //     if reader.read_line(&mut line).is_err() || line.trim().is_empty() {
-    //         break;
-    //     }
-    //     headers_str.push_str(&line);
-    // }
-    // let _headers = parse_headers_to_hashmap(&headers_str);
+ 
 
     match request.split_whitespace().next().unwrap() {
         "GET" => { handle_get( &mut writer, request.split_whitespace().nth(1).unwrap());}

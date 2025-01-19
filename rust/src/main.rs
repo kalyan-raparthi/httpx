@@ -1,3 +1,9 @@
+/*
+    HTTPX - MAIN FILE V1.0
+    AUTHOR: KALYAN RAPARTHI/ [ qb ], kalyan.raparthi@hotmail.com, Gihuub: @kalyan-raparthi
+*/
+
+// mod for core http functions
 mod kit; 
 
 use kit::core::{app_start, set_up};
@@ -7,9 +13,18 @@ use std::env::args;
 // HELP MESSAGE
 const HELP: &str = 
 r#"USAGE:
-start       starts httpx server
-stop        stops httpx server
+
+httpx <command> / <option>
+
+start           starts httpx server
+setup               sets up httpx server
+view-ip             views the ip address of the server
+view-port           views the port of the server
+help                prints this help message
+-v, --version       prints the version of httpx
+
 "#;
+// stop        stops httpx server
 
 pub fn parse_args() -> () {
     let args: Vec<String> = args().collect();
