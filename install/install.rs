@@ -2,7 +2,7 @@ use std::fs;
 use std::path::Path;
 use std::io::BufRead;
 
-const DEFAULT_CONFIG: &str = "&VERSION 1.0\n&IP localhost\n&PORT 5500\n";
+const DEFAULT_CONFIG: &str = "&VERSION 0.1.0\n&IP localhost\n&PORT 80\n";
 
 fn main() {
     if fs::metadata("C:/Program Files/httpx").is_ok() {
