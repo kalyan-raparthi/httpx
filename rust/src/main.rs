@@ -79,7 +79,7 @@ pub fn parse_args() -> () {
                     }
 
                     "-v" | "--verbose" => {
-                        println!("HTTPX SERVER V{}\tLIVE ON https://{}:{}", VERSION, get_ip(), get_port());
+                        println!("HTTPX SERVER V{}\tLIVE ON http://{}:{}", VERSION, get_ip(), get_port());
                     }
                     _ => {
                         eprintln!("INVALID OPTION");
