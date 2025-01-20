@@ -9,17 +9,10 @@ use crate::kit::net_ctl::{get_ip, get_port};
 pub const HOME: &str = "C:/Program Files/httpx";
 pub const CONFIG_PATH: &str = "C:/Program Files/httpx/config.txt";
 
-pub fn set_up() -> std::io::Result<()> {
-    let mut file = File::create(CONFIG_PATH)?;
-    file.write_all(b"> IP:localhost\n> 5500\n")?;
-    Ok(())
-}
-
 /// Starts the HTTPX server and listens for incoming connections.
 pub fn app_start() -> std::io::Result<()> {
     let address = format!("{}:{}", get_ip(), get_port());
     let listener = TcpListener::bind(address)?;
-    println!("HTTPX IS LIVE ON: http://{}", listener.local_addr().unwrap());
     for stream in listener.incoming() {
         match stream {
             Ok(stream) => {
@@ -101,11 +94,16 @@ pub fn get_header(response_type: &str, path: &str) -> String {
 
 /// Handles a GET request by sending the requested file or a 404 response if the file does not exist.
 pub fn handle_get(writer: &mut BufWriter<&TcpStream>, path: &str) {
-    let file_path = if path == "/" { &format!("{}/index.html", HOME) } else { &path[1..] };
+    let file_path = if path == "/" {
+        &format!("{}/index.html", HOME)
+    } else { 
+        &format!("{}/{}", HOME, &path[1..]) };
 
     if file_exists(file_path) {
+        println!("GET: {}", file_path);
         send_file(writer, file_path);
     } else {
+        println!("404: {}", file_path);
         send_response(writer, 404, "Not Found", Some("404 Not Found"));
     }
 }
@@ -116,7 +114,7 @@ pub fn send_file(writer: &mut BufWriter<&TcpStream>, path: &str) {
     
     let paths = path.split('/').last().unwrap();
     let response_type = paths.split('.').last().unwrap();
-
+    // attaching specific headers to the response omg qb!
     writer.write_all(get_header(response_type, path).as_bytes()).expect("send_file: ERROR WHILE WRITING HEADERS TO CLIENT");
     std::io::copy(&mut BufReader::new(file), writer).expect("send_file: ERROR WHILE WRITING CONTENT TO CLIENT");
     writer.flush().expect("send_file: ERROR WHILE FLUSHING BUFFER");
@@ -127,6 +125,7 @@ fn get_file_size(path: &str) -> std::io::Result<u64> {
     Ok(metadata.len())
 }
 pub fn response(stream: TcpStream) {
+    print!("REQUEST: {} >>> ", stream.peer_addr().unwrap());
     let mut reader = BufReader::new(&stream);
     let mut writer = BufWriter::new(&stream);
     
