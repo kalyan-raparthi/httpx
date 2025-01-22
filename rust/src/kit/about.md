@@ -2,8 +2,7 @@ This is a http utilities package.
 
 Author: kalyan rapathi / [ qb ], kalyan.raparthi@hotmail.com, Github: kalyan-raparthi
 
-` core `:
-    ```rust
+`  core  `:
     /// Starts the HTTPX server and listens for incoming connections.
     // pub fn app_start() -> std::io::Result<()>;
 
