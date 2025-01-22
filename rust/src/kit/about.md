@@ -3,6 +3,7 @@ This is a http utilities package.
 Author: kalyan rapathi / [ qb ], kalyan.raparthi@hotmail.com, Github: kalyan-raparthi
 
 `  core  `:
+```
     - Starts the HTTPX server and listens for incoming connections.
         pub fn app_start() -> std::io::Result<()>;
 
@@ -26,3 +27,4 @@ Author: kalyan rapathi / [ qb ], kalyan.raparthi@hotmail.com, Github: kalyan-rap
 
     - Handles the response for an incoming TCP stream.
         pub fn response(stream: TcpStream);
+```
