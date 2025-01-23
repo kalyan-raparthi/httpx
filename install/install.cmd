@@ -12,7 +12,7 @@ if %errorlevel% NEQ 0 (
 
 REM CREATING HTTPX IN PROGRAMFILES
 ECHO CREATING HTTPX IN PROGRAMFILES
-mkdir C:\Program Files\HTTPX;
+cd C:\Program Files &  mkdir HTTPX;
 
 REM Download HTTPX from GitHub
 echo DOWNLOADING HTTPX
