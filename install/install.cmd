@@ -10,6 +10,10 @@ if %errorlevel% NEQ 0 (
     exit /b 1
 )
 
+REM CREATING HTTPX IN PROGRAMFILES
+ECHO CREATING HTTPX IN PROGRAMFILES
+mkdir C:\Program Files\HTTPX;
+
 REM Download HTTPX from GitHub
 echo DOWNLOADING HTTPX
 powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/bin/httpx_win64_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\httpx.exe'"
