@@ -21,10 +21,9 @@ echo "$VERSION V0\n&IP localhost\n&PORT 21" >> config.txt;
 echo DOWNLOADING HTTPX
 powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/bin/httpx_win64_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\httpx.exe'"
 
-echo INSTALLING HTTPX
-rem powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/install/win64_installer_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\win64_installer_0.1.0.exe'"
+REM echo INSTALLING HTTPX
+REM powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/install/win64_installer_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\win64_installer_0.1.0.exe'"
 
-REM Add HTTPX to system PATH
 echo ADDING HTTPX TO PATH 
 setx PATH "%PATH%;C:\Program Files\HTTPX"
 
