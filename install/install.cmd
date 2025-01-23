@@ -14,6 +14,8 @@ REM CREATING HTTPX IN PROGRAMFILES
 ECHO CREATING HTTPX IN PROGRAMFILES
 cd C:\Program Files &  mkdir HTTPX;
 
+echo '$VERSION V0\n&IP localhost\n&PORT 21' >> C:\Program Files\HTTPX\config.txt
+
 REM Download HTTPX from GitHub
 echo DOWNLOADING HTTPX
 powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/bin/httpx_win64_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\httpx.exe'"
