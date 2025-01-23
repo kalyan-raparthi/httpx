@@ -8,7 +8,8 @@ Supports HTTP/1.1
 
 ## Installation (Windows 64-bit)
 ```powershell
-powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/kalyan-raparthi/httpx/refs/heads/main/install/install.cmd' -OutFile 'C:\Program Files\install.cmd'"; Start-Process -FilePath 'C:\Program Files\install.cmd'
+powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/kalyan-raparthi/httpx/refs/heads/main/install/install.cmd' -OutFile 'C:\Program Files\install.cmd'";
+Start-Process -FilePath 'C:\Program Files\install.cmd';
 ```
 
 ## File Structure
