@@ -15,19 +15,17 @@ ECHO CREATING HTTPX IN PROGRAMFILES
 cd C:\Program Files &  mkdir HTTPX;
 
 echo adding config file
-echo "$VERSION V0\n&IP localhost\n&PORT 21" >> C:\Program Files\HTTPX\config.txt;
-
+rem adding config.txt
+cd C:\Program Files\HTTPX;
+echo "$VERSION V0\n&IP localhost\n&PORT 21" >> config.txt;
 
 REM Download HTTPX from GitHub
 echo DOWNLOADING HTTPX
 powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/bin/httpx_win64_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\httpx.exe'"
 
-REM Install HTTPX
-echo INSTALLIN HTTPX
-
-
-powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/install/win64_installer_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\win64_installer_0.1.0.exe'"
-
+REM  Install HTTPX
+echo INSTALLING HTTPX
+rem powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/install/win64_installer_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\win64_installer_0.1.0.exe'"
 
 REM Add HTTPX to system PATH
 echo ADDING HTTPX TO PATH 
