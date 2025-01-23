@@ -1,6 +1,3 @@
-REM author: Kalyan Raparthi, kalyan.rapathi@hotmail.com, GitHub: kalyan-raparthi
-REM This script installs HTTPX on Windows.
-
 @echo off
 REM Check for administrative privileges
 openfiles >nul 2>&1
@@ -10,26 +7,30 @@ if %errorlevel% NEQ 0 (
     exit /b 1
 )
 
-REM DELETING IF ALREADY EXISTS.
-DEL C:\Program Files\HTTPX;
+REM Deleting HTTPX folder if it already exists
+if exist "C:\Program Files\HTTPX" (
+    echo Deleting existing HTTPX folder...
+    rmdir /s /q "C:\Program Files\HTTPX"
+)
 
-ECHO CREATING HTTPX IN PROGRAMFILES
-cd C:\Program Files/ & mkdir HTTPX;
+echo Creating HTTPX folder in Program Files
+mkdir "C:\Program Files\HTTPX"
 
-echo adding config file
-rem adding config.txt
-cd C:\Program Files\HTTPX;
-echo "$VERSION V0\n&IP localhost\n&PORT 21" >> config.txt;
+echo Adding config file
+rem Adding config.txt
+echo "$VERSION V0\n&IP localhost\n&PORT 21" > "C:\Program Files\HTTPX\config.txt"
 
-echo DOWNLOADING HTTPX
-powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/bin/httpx_win64_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\httpx.exe'"
+REM echo Downloading HTTPX...
+REM powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/bin/httpx_win64_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\httpx.exe'"
 
-REM echo INSTALLING HTTPX
-REM powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/install/win64_installer_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\win64_installer_0.1.0.exe'"
+if %errorlevel% NEQ 0 (
+    echo Download failed. Please check your network connection.
+    exit /b 1
+)
 
-echo ADDING HTTPX TO PATH 
+echo Adding HTTPX to PATH
 setx PATH "%PATH%;C:\Program Files\HTTPX"
 
-echo INSTALLATION IS NOW COMPLETE.
+echo Installation is now complete.
 echo To use HTTPX, open a new command prompt and type 'httpx --help'
 pause
