@@ -10,8 +10,11 @@ if %errorlevel% NEQ 0 (
     exit /b 1
 )
 
+REM DELETING IF ALREADY EXISTS.
+DEL C:\Program Files\HTTPX;
+
 ECHO CREATING HTTPX IN PROGRAMFILES
-cd C:\Program Files & mkdir HTTPX;
+cd C:\Program Files/ & mkdir HTTPX;
 
 echo adding config file
 rem adding config.txt
