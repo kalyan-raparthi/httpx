@@ -14,7 +14,9 @@ REM CREATING HTTPX IN PROGRAMFILES
 ECHO CREATING HTTPX IN PROGRAMFILES
 cd C:\Program Files &  mkdir HTTPX;
 
+echo adding config file
 echo "$VERSION V0\n&IP localhost\n&PORT 21" >> C:\Program Files\HTTPX\config.txt;
+
 
 REM Download HTTPX from GitHub
 echo DOWNLOADING HTTPX
