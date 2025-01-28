@@ -20,8 +20,8 @@ echo Adding config file
 rem Adding config.txt
 echo "$VERSION V0\n&IP localhost\n&PORT 21" > "C:\Program Files\HTTPX\config.txt"
 
-REM echo Downloading HTTPX...
-REM powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/bin/httpx_win64_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\httpx.exe'"
+echo Downloading HTTPX...
+powershell -Command "Invoke-WebRequest -Uri 'https://github.com/kalyan-raparthi/httpx/raw/refs/heads/main/bin/httpx_win64_0.1.0.exe' -OutFile 'C:\Program Files\HTTPX\httpx.exe'"
 
 if %errorlevel% NEQ 0 (
     echo Download failed. Please check your network connection.
